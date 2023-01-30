@@ -1,0 +1,161 @@
+{% extends 'users/base.html' %}
+{% load mathfilters%}
+{% block body %}
+<div class="flex mt-5 p-10 justify-center">
+    <h1 class="text-3xl font-normal mb-2 text-gray-500">My Posts</h1>
+</div>
+
+<div>
+    {% for post in posts %}
+        
+      <div class="rounded overflow-hidden w-[470px] h-[470px] bg-gray-200 shadow-lg p-10 m-10">
+          <div class="user-container flex mx-5 my-2">
+              <img class="h-10 w-10 rounded-full" src="{{post.user.profile.photo.url}}" alt="">
+              <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
+              <div class="font-bold text-3xl mx-2 my-2">-- {{post.title}} --</div>
+          </div>
+          <hr>
+          <div class="mx-2 my-2">{{post.body}}</div>
+          {% if post.images %}
+            {% for image in post.images.all%} 
+          <div class="justify-center" style="justify-content: center;">
+              <img class="h-70 px-20" src="{{ image.images.url }}" alt="" style="height: 50%;">
+              <div class="mx-2 my-2">{{image.caption}}</div>
+            </div>
+            {% endfor %}
+          {% endif %}
+        
+          <div class="px-6">
+              <div class="icon-container flex gap-3 py-1">
+                  {% if request.user in post.liked_by.all %}
+                  <a href="like/{{post.id}}#{{post.id}}"><i id="{{ post.id }}" class="fa-solid fa-heart" style="color: red;"></i></a>
+                  <!-- <a href="{% url 'like' post.id %}" class="button-like"><i class="fa-solid fa-heart" style="color: red;"></i></a> -->
+                  {% else %}
+                  <a href="like/{{post.id}}#{{post.id}}" class="button-like"><i id="{{ post.id }}" class="fa-regular fa-heart"></i></a>
+                  <!-- <a href="{% url 'like' post.id %}" class="button-like"><i class="fa-regular fa-heart"></i></a> -->
+                  {% endif %}
+                  <a>
+                      <i class="fa-regular fa-message"></i>
+                  </a>
+                  <a>
+                      <i class="fa-solid fa-share"></i>
+                  </a>
+              </div>
+              <hr>
+              <!-- <div>
+                  <p>Likes: {{ post.liked_by.all|length }}</p>
+                  
+              </div> -->
+              <a><div class="py-2" data-toggle="modal" data-target="#myModal-{{post.id}}">
+                  {% if request.user in post.liked_by.all %}
+                      {% if post.liked_by.count < 1 %}
+                      {% elif post.liked_by.count == 1 %}
+                      You like this
+                      {% elif post.liked_by.count > 1 %}
+                      You & {{ post.liked_by.count|sub:1 }} Like this
+                      
+                      {% endif %}
+                  {% else %}
+                      {% if post.liked_by.count < 1 %}
+                      {% elif post.liked_by.count == 1 %}
+                      {{ post.liked_by.first }} Likes this
+                      {% elif post.liked_by.count > 1 %}
+                      {{ post.liked_by.first }} & {{ post.liked_by.count|sub:1 }} like this
+                      {% endif %}
+                  {% endif %}
+              </div></a>
+              <hr>
+              <!-- Modal -->
+              <div class="modal fade" id="myModal-{{post.id}}" role="dialog">
+                <div class="modal-dialog modal-dialog-scrollable">
+
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Post liked by: </h4>
+                    </div>
+                    <div class="modal-body">
+                      {% for name in post.liked_by.all%}
+                        <p>{{name}}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="nothing">
+                  {% for name in post.liked_by.all%}
+                  <p>{{name}}</p>
+                {% endfor %}
+              </div> -->
+
+              <!-- Scrollable modal -->
+
+
+
+                </div>
+                <div class="px-5 py-5">
+                {% for comment in post.comments.all %}
+                <p><b>{{comment.posted_by}}</b>: {{ comment.body }} </p>
+                {% endfor %}
+                </div>
+                <div class="px-5 py-5">
+                  <form method="post" class="bg-white shadow-md m-10 w-4/5 rounded px-8 pt-6 pb-8 mb-4">
+                    {% csrf_token %}
+                    <div class="m-2">
+                      <label class="block text-grey-700 text-sm font-bold mb-2">Add Comment</label>
+                    </div>
+                    <div class="shadow appearance-none border rounded py-2 px-3 mr-10 text-grey-700">
+                      {{comment_form.body}}
+                    </div>
+                    <div>
+                      <input type="hidden" name="post_id" id="post_id" value="{{ post.id }}">
+                      <input type="hidden" name="posted_by" id="posted_by" value="{{ logged_user }}">
+                    </div>
+                      <button class="bg-green-500 text-white px-5 py-2" type="submit">Add</button>
+                  </form>
+                </div>
+      </div>
+
+      </div>
+  </div>
+
+{% endfor %}
+</div>
+<!-- <div class="grid mx-60 p-10 grid-cols-1 justify-center">
+    {% for post in posts %}
+    {% if post.image %}
+        <a href="">
+            <div class="rounded overflow-hidden w-[470px] h-[470px] bg-white shadow-lg p-10 m-10">
+                <div class="user-container flex mx-5 my-2">
+                    <img class="h-10 w-10 rounded-full" src="{{profile.photo.url}}" alt="">
+                    <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
+                    <div class="mx-2 my-2">{{post.title}}</div>
+                </div>    
+                    <img class="h-70 px-20" src="{{ post.image.url }}" alt="">
+                    <div class="mx-2 my-2">{{post.caption}}</div>
+            </div>
+        </a>
+       
+    {% else %}
+    <a href="">
+        <div class="rounded overflow-hidden w-[470px] h-[470px] bg-white shadow-lg p-10 m-10">
+            <div class="user-container flex mx-5 my-2">
+                <div class="user-container flex mx-5 my-2">
+                    <img class="h-10 w-10 rounded-full" src="{{profile.photo.url}}" alt="">
+                    <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
+                    <div class="mx-2 my-2">{{post.title}}</div>
+                </div>    
+                    <div class="mx-2 my-2">{{post.body}}</div>
+                
+            </div>
+        </div>
+    </a>
+    {% endif %}
+{% endfor %}
+</div> -->
+
+{% endblock %}

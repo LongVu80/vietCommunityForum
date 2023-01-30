@@ -1,0 +1,47 @@
+{% extends 'users/base.html' %}
+{% load hitcount_tags %}
+{% load mathfilters%}
+{% block body %}
+
+<h1>{{ category.title }}</h1>
+{% for post in posts %}
+
+<div class="rounded overflow-hidden w-[470px] h-[470px] bg-gray-200 shadow-lg p-10 m-10">
+    <div class="user-container flex mx-5 my-2">
+        
+        <img class="h-10 w-10 rounded-full" src="{{post.user.profile.photo.url}}" alt="">
+        <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
+        <div class="font-bold text-3xl mx-2 my-2"><a href="{% url 'detail' post.slug %}">-- {{post.title}} --</a></div>
+        <div class="replies">
+            {% with comments=post.comments.all|length %}
+            <!-- Display the total number of comments for the post -->
+            <div>{{ comments }} comments</div>
+            <!-- <div> last</div> -->
+            <div>{{ comments.last_reply }}</div>
+            <b><a href="http://">{{comments.last_reply}}</a></b>
+
+            {% endwith %}
+            <br> {% get_hit_count for post %} views
+            <!-- <div class="font-bold mx-2 my-2">{{ hit_count }} views</div> -->
+        </div>
+        <div class="last-reply">
+            <br>
+            {% with comments=post.comments.all %}
+                {% if comments %}
+                    <!-- Get the latest comment by sorting the comments by the created field in reverse order and getting the first element -->
+                    {% with last_reply=comments|dictsort:"created"|last %}
+                        <!-- Display the latest comment -->
+                        <div>Last reply: {{ last_reply.created|date }}</div>
+                        <div>by: {{ last_reply.posted_by }}</div>
+                    {% endwith %}
+                {% else %}
+                    <!-- Display a message if there are no comments -->
+                    <div>No comments yet.</div>
+                {% endif %}
+            {% endwith %}
+            <b><a href="http://">{{comment.last_reply.created}}</a></b>
+        </div>
+    </div>
+</div>
+    {% endfor %}
+    {% endblock %}

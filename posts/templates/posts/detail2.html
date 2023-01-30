@@ -1,0 +1,33 @@
+
+
+{% extends 'users/base.html' %}
+{% load mathfilters%}
+{% block body %}
+<h1>{{ post.title }}</h1>
+    <p>{{ post.body }}</p>
+    <h3>Comments:</h3>
+    <ul>
+        {% for comment in post.comments.all %}
+            <li>{{ comment.body }}</li>
+            <h4>Replies:</h4>
+            <ul>
+                {% for reply in comment.replies.all %}
+                    <li>{{ reply.body }}</li>
+                {% endfor %}
+            </ul>
+            <form method="post" action="{% url 'add_reply' comment.id %}">
+                {% csrf_token %}
+                <label for="reply">Add a reply:</label>
+                <textarea name="reply" id="reply"></textarea>
+                <input type="submit" value="Post Reply">
+            </form>
+        {% endfor %}
+    </ul>
+    <form method="post">
+        {% csrf_token %}
+        <label for="comment">Add a comment:</label>
+        <textarea name="comment" id="comment"></textarea>
+        <input type="submit" value="Post Comment">
+    </form>
+
+{% endblock %}

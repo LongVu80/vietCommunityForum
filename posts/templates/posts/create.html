@@ -1,0 +1,50 @@
+{% extends 'users/base.html' %}
+{% block body %}
+<div class="container py-5">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- {{p_form.as_p}}
+        {{imageF.as_p}} -->
+        <div class="postC m-10">
+            <div class="mb-5 flex">
+                <label class="block text-gray-700 font-bold mb-2 mr-10" for="categories">Categories:</label>
+                <select id="categories" name="categories">
+                    {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-5 flex">
+                <label class="block text-gray-700 font-bold mb-2 mr-10" for="title">Title:</label>
+                <input class="shadown appearance-none border rounded py-2 px-3 mr-10" type="text" id="title" name="title" required>
+            </div>
+            <div class="mb-5 flex">
+                <label class="block text-gray-700 font-bold mb-2 mr-10" for="body">Body:</label>
+                <textarea class="shadown appearance-none border rounded py-2 px-3 mr-10" cols="40" rows="10" id="body" name="body" required></textarea>
+            </div>
+            
+            <div class="mb-5 flex">
+                <label class="block text-gray-700 font-bold mb-2 mr-10" for="images">Images:</label>
+                <input type="file" name="images" accept="image/*" id="id_image" multiple="" onchange="previewMultiple(event)">
+                
+            </div>
+            <div id="preview"></div>
+            <div class="mb-5 flex">
+                <label class="block text-gray-700 font-bold mb-2 mr-10" for="id_tags">Tags:</label>
+                <input class="shadown appearance-none border rounded py-2 px-3 mr-10" type="text" name="tags" id="id_tags">
+                
+                <span class="helptext">A comma-separated list of tags.</span>
+                
+                
+                
+                
+            </div>
+            
+        </div>
+        
+        <button class="text-white bg-blue-500 px-5 py-2 rounded my-4 added" type="submit">Create Post</button>
+    </form>
+</div>
+
+
+{% endblock %}

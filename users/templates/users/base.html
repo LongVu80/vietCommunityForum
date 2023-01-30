@@ -1,0 +1,51 @@
+{% load static %}
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'users/styles.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/21524b5437.js" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="{% static 'users/style.css' %}">
+        
+        
+    </head>
+        <body class="bg-bg-img">
+            <nav class="shadow-lg">
+                <div class="px-4 mx-auto">
+                    <div class="flex justify-between baseHeader">
+                        <div>
+                            <a class="flex-title" href="">
+                                <img class="h-8 w-8 mr-2 logo" src="{% static 'users/images/wheat.png' %}" alt="">
+                                <span class="font-semibold text-lg text-blue-500 baseTitle">Viet Forum</span>
+                            </a>
+                        </div>
+                        <div class="space-x-1">
+                            <a class="py-4 px-2" href="{% url 'feed' %}">Dashboard</a>
+                            <a class="py-4 px-2" href="{% url 'index' %}">Categories</a>
+                            <a class="py-4 px-2" href="{% url 'create' %}">Create a post</a>
+                            {% if request.user.is_authenticated %}
+                            <a class="py-4 px-2" href="{% url 'logout' %}">Logout</a>
+                            {% else %}
+                            <a class="py-4 px-2" href="{% url 'login' %}">Login</a>
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </nav>
+            
+                {% block body%} 
+                {% endblock %}
+            <script type="text/javascript" src="{% static 'users/script.js' %}"></script>
+            <!-- JavaScript Bundle with Popper -->
+    </body>
+            
+            
+    
+</html>

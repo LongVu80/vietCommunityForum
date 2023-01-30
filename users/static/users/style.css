@@ -1,0 +1,77 @@
+
+input:focus {
+    outline: none;
+    width: 100%;
+}
+
+.addmore {
+    background-color: green;
+}
+
+/* .flex {
+    display: grid;
+    grid-template-columns: 20%, 80%;
+} */
+
+.logo {
+    height: 50px;
+    width: 50px;
+}
+
+.user-container {
+    margin: 20px;
+    padding: 20px;
+    align-items: center;
+}
+
+.title{
+    background-image: linear-gradient(to right, green, yellow);
+    color: white;
+}
+
+.description *{
+    margin-block: 0;
+
+    background: linear-gradient(to right, green, blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.info a {
+    background: linear-gradient(to right, blue, green);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.row{
+    display: grid;
+    grid-template-columns: 0% 7% 60% 13% 20%;
+}
+
+.column{
+    padding: 10px;
+    margin: 4px;
+    border-radius: 5px;
+    /* border: 2px solid lightsalmon; */
+    /* background-color: lightgoldenrodyellow; */
+    background-color: lightblue;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.f-icon i{
+    font-size: 45px;
+}
+.divider {
+        display: block;
+        border: 0;
+        height: 1px;
+        background-image: linear-gradient(to right, yellow, green, yellow);
+    }
+
+.postBody {
+    text-decoration: none;
+}

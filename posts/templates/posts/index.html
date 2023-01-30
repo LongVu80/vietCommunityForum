@@ -1,0 +1,73 @@
+{% extends 'users/base.html' %}
+{% load mathfilters%}
+{% block body %}
+    <div class="user-container">
+        <div class="title">
+            <h1>General Information</h1>
+        </div><div class="row">
+            <div class="f-icon column center">
+                <i class="fa fa-car"></i>
+            </div>
+            <div class="description column">
+                <h1><a href="{% url 'feed' %}">All POSTS</a></h1>
+                <p>Description: all posts</p>
+                
+            </div>
+            
+            <div class="stats column center">
+                <!-- {% if posts %} -->
+                <p>{{ posts.all|length }} Posts</p>
+            <!-- {% else %} 
+                <p>No posts to display</p> 
+            {% endif %}  -->
+            </div>
+            
+            <div class="info column">
+                <!-- <small>Category: {{ latest_post.categories.first.title }}</small> -->
+                <b><a href="{{latest_post.get_url}}">Last Post</a></b> by <a href="/posts/view?user={{ post.user.id }}" id="user-posts-link">{{latest_post.user|title}}</a>
+                <br>
+                on <small>{{latest_post.created}} <br>
+                    -- Category: {{ latest_post.categories.first.title }} --</small> 
+            </div>
+            
+        </div>
+        <!-- <hr class="divider"> -->
+        
+        {% for category in categories %}
+        
+        <div class="row">
+            <div class="f-icon column center">
+                <i class="fa fa-car"></i>
+            </div>
+            <div class="description column">
+                <h1><a href="{% url 'category_detail' slug=category.slug %}">{{ category.title }}</a></h1>
+                <p>Description: {{category.description}}</p>
+                
+            </div>
+            <div class="stats column center">
+                <span>{{category.num_posts}} Posts</span>
+            </div>
+            <div class="info column">
+                <b><a href="{{category.last_post.get_url}}">Last Post</a></b> by <a href="/posts/view?user={{ post.user.id }}" id="user-posts-link">{{category.last_post.user|title}}</a>
+                <br>
+                on <small>{{category.last_post.created}}</small> 
+            </div>
+        </div>
+        {% endfor %}
+        <hr class="divider">
+        
+    </div>
+
+    <!-- Forum Info  -->
+    <div class="forum-info ml-10">
+        <div class="chart">
+            <span class="name"><a href="">Viet Forum</a></span><span> - Stats &nbsp; <i class="fa-solid fa-chart-column"></i></span>
+        </div>
+        <div>
+            <span><b>{{ posts.all|length }} Posts</b> in <b>{{ categories.all|length }} Topics</b> by <b>{{ users|length }} Users</b></span><br>
+            <span>Latest post: <b><a href="{{latest_post.get_url}}">{{latest_post|title}}</a></b> on {{latest_post.created}} By <a href="/posts/view?user={{ post.user.id }}" id="user-posts-link">{{latest_post.user|title}}</a></span><br>
+            <span>Check <a href="http://">the latest post</a></span><br>
+        </div>
+    </div>
+
+    {% endblock %}
